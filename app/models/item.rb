@@ -1,6 +1,6 @@
 def Item
-    has_many :list_item
-    has_many :list, through :list_item
+    has_many :list_items
+    has_many :lists, through :list_items
 
     attr_reader :item_name, price
     

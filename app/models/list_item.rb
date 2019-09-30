@@ -1,6 +1,6 @@
 class ListItem 
-    belongs_to :item
-    belongs_to :list
+    belongs_to :items
+    belongs_to :lists
 
     def initialize(item, list)
         @item = item

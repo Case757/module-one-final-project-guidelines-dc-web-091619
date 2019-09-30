@@ -1,5 +1,5 @@
 class User
-    has_many :list
+    has_many :lists
     attr_reader :name
     def initialize(name)
         @name = name
