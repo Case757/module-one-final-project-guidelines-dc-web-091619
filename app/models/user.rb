@@ -1,6 +1,6 @@
-class User
+class User < ActiveRecord::Base
     has_many :lists
-    attr_reader :name
+ 
     def initialize(name)
         @name = name
     end

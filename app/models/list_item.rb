@@ -1,4 +1,4 @@
-class ListItem 
+class ListItem < ActiveRecord::Base
     belongs_to :items
     belongs_to :lists
 
