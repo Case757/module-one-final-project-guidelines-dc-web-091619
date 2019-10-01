@@ -37,9 +37,10 @@ end
 def choose_option
     # puts "1. Add item 2. Remove item 3. Print list 4. Total price"
     user_input = $prompt.select("Choose an option", ["Add item", "Remove item", "Print list", "Total price"])
+
     if user_input == "Add item"
         
-        item_names = Item.all.map {|item| item.item_name}
+        item_names = Item.all.map {|item| item.item_nam e}
         new_items = $prompt.multi_select("Please select items to add to list.", item_names)
         
         new_items.each do |item|
@@ -49,7 +50,15 @@ def choose_option
         end
 
     elsif user_input == "Remove item"
-
+        
+        test_array = ListItem.all.map {|li| li.list_id}
+        
+        if test_array.include?($current_list.id)
+            $prompt.multi_select("Please select items to remove from list.", $current_list.item_name)
+        else
+            puts "There are no items on your list, please create a list."
+            choose_option            
+        end
 
     elsif user_input == "Print list"
         $current_list.items.map {|item| puts item.name}
