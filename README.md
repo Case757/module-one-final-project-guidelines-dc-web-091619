@@ -76,3 +76,9 @@ Having built your project on your own with a partner, you are the expert on it! 
 # in config/environment.rb add this line:
 ActiveRecord::Base.logger = nil
 ```
+
+<!-- As a user, I would like to enter my name and retrieve my lists
+As a user, I would like to enter my list and be given a route through the grocery store
+As a user, I would like to know the total price of my grocery list
+As a user, I would like to be able to remove or add an item to my grocery list
+ -->
