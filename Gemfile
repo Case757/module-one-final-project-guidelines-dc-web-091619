@@ -9,3 +9,4 @@ gem 'rake'
 gem "require_all"
 gem "database_cleaner"
 gem 'rspec'
+gem 'tty-prompt', '~> 0.19.0'
