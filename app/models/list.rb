@@ -4,9 +4,4 @@ class List < ActiveRecord::Base
     belongs_to :user
 
 
-
-    def initialize(user)
-        @user = user
-    end
-
 end
