@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(version: 2019_10_01_152713) do
     t.string "category"
   end
 
-  create_table "listitems", force: :cascade do |t|
+  create_table "list_items", force: :cascade do |t|
     t.integer "item_id"
     t.integer "list_id"
   end
