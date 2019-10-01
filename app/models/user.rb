@@ -1,10 +1,4 @@
 class User < ActiveRecord::Base
     has_many :lists
- 
-    def initialize(name)
-        @name = name
-    end
-
-    update test
-
+    has_many :list_items, through :lists
 end
