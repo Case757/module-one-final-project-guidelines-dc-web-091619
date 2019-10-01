@@ -1,4 +1,6 @@
 ##Greet user and prompt for name##
+$current_user = nil
+
 def get_user_name
     puts "Welcome to E-List-It! Please enter your name"
     user_name = gets.chomp
@@ -9,20 +11,25 @@ def create_or_find_user(user_name)
         # puts "Would you like to use a previous list? Y/N"
         # user_input = gets.chomp
     else
-        User.create(user_name)
+        $current_user = User.create(name: user_name)
     end
 end
 
 def choose_shopping_list
     puts "Would you like to create a new shopping list? Y/N"
     user_input = gets.chomp
+
     if user_input == "Y"
-        List.create(create_or_find_user)
+        puts "Name your list."
+        list_name = gets.chomp
+        List.create(name: list_name, user_id: $current_user.id)
     else
-        puts "Thank you for trying E-List-It"
-        end_program
+        return "Thank you for trying E-List-It"
     end
+    
 end
+
+
 
 def choose_option(list)
     puts "Choose an option"
@@ -33,7 +40,7 @@ def choose_option(list)
     elsif user_input == "Remove item"
 
     elsif user_input == "Print list"
-        list.items.map {item| puts item.name}
+        list.items.map {|item| puts item.name}
     elsif user_input == "Total price"
         list.total_price
     else

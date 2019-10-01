@@ -1,6 +1,7 @@
 require_relative '../config/environment.rb'
 
-Item.destroy_all 
+Item.destroy_all
+User.destroy_all
 
 vegetable1 = Item.create(item_name: "Broccoli", price: 2.99, category: "Vegetable")
 vegetable2 = Item.create(item_name: "Peas", price: 1.99, category: "Vegetable")
