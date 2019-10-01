@@ -5,4 +5,6 @@ class User < ActiveRecord::Base
         @name = name
     end
 
+    this is a test to see if we get git.
+
 end
