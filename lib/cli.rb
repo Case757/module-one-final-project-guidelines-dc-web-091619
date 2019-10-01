@@ -26,10 +26,10 @@ def choose_shopping_list
         puts "Name your list."
         list_name = gets.chomp
         $current_list = List.create(name: list_name, user_id: $current_user.id)
+        
     else
         return "Thank you for trying E-List-It"
     end
-    
 end
 
 
@@ -38,11 +38,18 @@ def choose_option
     # puts "1. Add item 2. Remove item 3. Print list 4. Total price"
     user_input = $prompt.select("Choose an option", ["Add item", "Remove item", "Print list", "Total price"])
     if user_input == "Add item"
+        
         item_names = Item.all.map {|item| item.item_name}
         new_items = $prompt.multi_select("Please select items to add to list.", item_names)
-        binding.pry
+        
+        new_items.each do |item|
+            this_item = Item.find_by(item_name: item)
+            
+            ListItem.create(item_id: this_item.id, list_id: $current_list.id)
+        end
 
     elsif user_input == "Remove item"
+
 
     elsif user_input == "Print list"
         $current_list.items.map {|item| puts item.name}
