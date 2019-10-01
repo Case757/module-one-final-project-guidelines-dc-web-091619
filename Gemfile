@@ -7,3 +7,5 @@ gem "pry"
 gem "faker"
 gem 'rake'
 gem "require_all"
+gem "database_cleaner"
+gem 'rspec'

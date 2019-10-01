@@ -1,9 +1,5 @@
 class ListItem < ActiveRecord::Base
-    belongs_to :items
-    belongs_to :lists
+    belongs_to :item
+    belongs_to :list
 
-    def initialize(item, list)
-        @item = item
-        @list = list
-    end
 end

@@ -5,4 +5,6 @@ class User < ActiveRecord::Base
         @name = name
     end
 
+    update test
+
 end
