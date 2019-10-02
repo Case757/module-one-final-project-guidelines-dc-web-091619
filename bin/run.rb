@@ -1,8 +1,8 @@
 require_relative '../config/environment'
 require_relative '../lib/cli'
 
-username = get_user_name
-new_user = create_or_find_user(username)
-choose_shopping_list
-choose_option
+username = Cli.get_user_name
+new_user = Cli.create_or_find_user(username)
+Cli.choose_shopping_list
+Cli.choose_option
 
