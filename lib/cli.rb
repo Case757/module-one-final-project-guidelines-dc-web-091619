@@ -53,12 +53,15 @@ class Cli
 
     def choose_shopping_list
         user_input = @@prompt.yes?('Would you like to create a new shopping list?')
-        if user_input
+
+        if user_input == true
             puts "Name your list."
             list_name = gets.chomp
             self.current_list = List.create(name: list_name, user_id: self.current_user.id) 
-        else
-            return "Thank you for trying E-List-It"
+
+        elsif user_input == false
+            puts "Thank you for trying E-List-It"
+            exit!
         end
     end
 
