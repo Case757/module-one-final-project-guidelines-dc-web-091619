@@ -52,15 +52,11 @@ class Cli
     end
 
     def choose_shopping_list
-        ##refactor to use prompt gem instead of getting user input
-        puts "Would you like to create a new shopping list? Y/N"
-        user_input = gets.chomp
-
-        if user_input == "Y"
+        user_input = @@prompt.yes?('Would you like to create a new shopping list?')
+        if user_input
             puts "Name your list."
             list_name = gets.chomp
-            self.current_list = List.create(name: list_name, user_id: self.current_user.id)
-            
+            self.current_list = List.create(name: list_name, user_id: self.current_user.id) 
         else
             return "Thank you for trying E-List-It"
         end
