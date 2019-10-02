@@ -19,6 +19,7 @@ def create_or_find_user(user_name)
 end
 
 def choose_shopping_list
+    ##refactor to use prompt gem instead of getting user input
     puts "Would you like to create a new shopping list? Y/N"
     user_input = gets.chomp
 
@@ -40,14 +41,19 @@ def choose_option
 
     if user_input == "Add item"
         
-        item_names = Item.all.map {|item| item.item_nam e}
+        item_names = Item.all.map {|item| item.item_name}
         new_items = $prompt.multi_select("Please select items to add to list.", item_names)
+
         
         new_items.each do |item|
             this_item = Item.find_by(item_name: item)
             
             ListItem.create(item_id: this_item.id, list_id: $current_list.id)
         end
+
+        puts "Your list has been updated"
+        choose_option
+
 
     elsif user_input == "Remove item"
         
@@ -61,12 +67,22 @@ def choose_option
         end
 
     elsif user_input == "Print list"
-        $current_list.items.map {|item| puts item.name}
+        $current_list.items.map do |item| 
+            puts item.item_name
+        end
+
     elsif user_input == "Total price"
         $current_list.total_price
     else
         puts "That is not an opton, please choose again"
         choose_option
+    end
+end
+
+def print_items_added(array)
+    puts "These items have been added to your shopping list:"
+    array.each do |item|
+        puts item
     end
 end
 
