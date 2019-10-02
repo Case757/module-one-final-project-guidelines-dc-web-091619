@@ -4,6 +4,6 @@ class List < ActiveRecord::Base
     belongs_to :user
 
     def total_price
-        self.items.map {|item| item.price}.sum
+        self.items.map {|item| item.price}.sum.round(2)
     end
 end
