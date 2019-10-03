@@ -41,21 +41,28 @@ class Cli
         user_name = gets.chomp
     end
 
+    def pick_list(user_name)
+        user = User.find_by(name: user_name)
+        list_names = user.lists.map {|list| list.name}
+        if list_names.length == 0
+            "You don't have any stored lists. Please choose another option."
+            choose_shopping_list
+        else
+            user_lists = List.find_by(user_id: user.id)
+            user_input = @@prompt.select("Pick a list", list_names)
+            selected_list = List.find_by(name: user_input)
+            self.current_list = selected_list
+        end
+    end
+
     def create_or_find_user(user_name)
         if User.names.include?(user_name)
             user_input = @@prompt.select('Would you like to use a previous list?', ["Yes", "No"])
             if user_input == "Yes"
-                user = User.find_by(name: user_name)
-                list_names = user.lists.map {|list| list.name}
-                user_lists = List.find_by(user_id: user.id)
-                user_input = @@prompt.select("Pick a list", list_names)
-                selected_list = List.find_by(name: user_input)
-                self.current_list = selected_list
-
+              self.pick_list(user_name) 
             else
                 self.current_user = User.find_by(name: user_name)
             end
-
         else
             self.current_user = User.create(name: user_name)
         end
