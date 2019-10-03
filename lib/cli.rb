@@ -138,7 +138,9 @@ class Cli
     end
 
     def choose_another_list(user_input)
-        
+        if user_input == "Choose another list"
+            user = User.find
+        end
     end
 
     def exit_list(user_input)
