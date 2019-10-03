@@ -10,7 +10,6 @@ class Cli
         choose_shopping_list
         user_input = choose_option
         choice_menu(user_input)
-        
     end
 
     def choice_menu(user_input)
@@ -44,25 +43,41 @@ class Cli
 
     def create_or_find_user(user_name)
         if User.names.include?(user_name)
-            # puts "Would you like to use a previous list? Y/N"
-            # user_input = gets.chomp
+            user_input = @@prompt.yes?('Would you like to use a previous list?')
+            if user_input
+                user = User.find_by(name: user_name)
+                list_names = user.lists.map {|list| list.name}
+                user_lists = List.find_by(user_id: user.id)
+                user_input = @@prompt.select("Pick a list", list_names)
+                selected_list = List.find_by(name: user_input)
+                self.current_list = selected_list
+
+            else
+                self.current_user = User.find_by(name: user_name)
+            end
+
         else
             self.current_user = User.create(name: user_name)
         end
     end
 
     def choose_shopping_list
-        user_input = @@prompt.select('Would you like to create a new shopping list?',["Yes", "No"])
-      
-        if user_input == "Yes"
-            puts "Name your list."
-            list_name = gets.chomp
-            self.current_list = List.create(name: list_name, user_id: self.current_user.id) 
+        
+        if self.current_list
+            self.current_list
+        else 
+            user_input = @@prompt.select('Would you like to create a new shopping list?',["Yes", "No"])
 
-        elsif user_input == "No"
-            puts "Thank you for trying E-List-It"
-            exit!
-        endMake
+            if user_input == "Yes"
+                puts "Name your list."
+                list_name = gets.chomp
+                self.current_list = List.create(name: list_name, user_id: self.current_user.id) 
+
+            elsif user_input == "No"
+                puts "Thank you for trying E-List-It"
+                exit!
+            end
+        end
     end
 
     def choose_option
@@ -118,7 +133,7 @@ class Cli
 
     def total_price(user_input)
         if user_input == "Total price"
-            puts "The items in your list total to $#{self.current_list.total_price}."
+            puts "The items in your list total to $#{self.current_list.total_price}"
         end
     end
 
