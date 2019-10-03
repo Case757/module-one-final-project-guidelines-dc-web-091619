@@ -16,29 +16,38 @@ class Cli
 
     ##----------Interprets choice menu----------##
 
-
     def choice_menu(user_input)
         case user_input
         when "Add item" 
             add_item(user_input)
             user_input = choose_option
             choice_menu(user_input)
+
         when "Remove item"
             remove_item(user_input)
             user_input = choose_option
             choice_menu(user_input)
+
         when "Print list"
             print_list(user_input)
             user_input = choose_option
             choice_menu(user_input)
+
         when "Total price"
             total_price(user_input)
             user_input = choose_option
             choice_menu(user_input)
+        
         when "Choose another list"
             choose_another_list(user_input)
             user_input = choose_option
             choice_menu(user_input)
+        
+        when "Create a new list"
+            create_new_list(user_input)
+            user_input = choose_option
+            choice_menu(user_input)
+       
         when "Exit E-List-It"
             exit_list(user_input)
         end  
@@ -59,7 +68,7 @@ class Cli
 
         if list_names.length == 0
             "You don't have any stored lists. Please choose another option."
-            choose_shopping_list
+            self.choose_shopping_list #####added self
         else
             user_lists = List.find_by(user_id: current_user.id)
             user_input = @@prompt.select("Pick a list", list_names)
@@ -75,7 +84,6 @@ class Cli
         if User.names.include?(user_name)
 
             self.current_user = User.find_by(name: user_name)
-            use_previous_list?
 
         else
             self.current_user = User.create(name: user_name)
@@ -87,9 +95,9 @@ class Cli
         user_input = @@prompt.select('Would you like to use a previous list?', ["Yes", "No"])
 
             if user_input == "Yes"
-              self.pick_list 
+              self.pick_list ######added self
             else
-                self.current_user = User.find_by(name: gituser_name)
+                self.current_user = User.find_by(name: user_name)
             end
     end
 
@@ -101,11 +109,7 @@ class Cli
             user_input = @@prompt.select('Would you like to create a new shopping list?',["Yes", "No"])
 
             if user_input == "Yes"
-                puts "_______________________________"
-                puts "Name your list."
-                puts "_______________________________"
-                list_name = gets.chomp
-                self.current_list = List.create(name: list_name, user_id: self.current_user.id) 
+                self.create_new_list(user_input) ####added self
 
             elsif user_input == "No"
                 puts "_______________________________"
@@ -120,13 +124,18 @@ class Cli
 
 
     def choose_option
-        user_input = @@prompt.select("Your current list is #{self.current_list.name}. Choose an option:", ["Add item", "Remove item", "Print list", "Total price", "Choose another list", "Exit E-List-It"])
+        if self.current_list 
+            user_input = @@prompt.select("Your current list is #{self.current_list.name}. Choose an option:", ["Add item", "Remove item", "Print list", "Total price", "Choose another list", "Create new a list", "Exit E-List-It"])
+        else
+            user_input = @@prompt.select("Choose an option:", ["Add item", "Remove item", "Print list", "Total price", "Choose another list", "Create new a list", "Exit E-List-It"])
+        end
     end
 
     ##---------- Add item option ----------##
 
 
     def add_item(user_input)
+        binding.pry
         if  user_input == "Add item"
             
             item_names = Item.all.map {|item| item.item_name}
@@ -204,6 +213,17 @@ class Cli
         if user_input == "Choose another list"
             self.pick_list
         end
+    end
+
+    ##---------- Create a new list option ---------##
+
+    def create_new_list(user_input)
+            puts "_______________________________"
+            puts "Name your list."
+            puts "_______________________________"
+            list_name = gets.chomp
+            self.current_list = List.create(name: list_name, user_id: self.current_user.id) 
+            
     end
 
     ##---------- Exist list option ----------##
