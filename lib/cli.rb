@@ -35,6 +35,10 @@ class Cli
             total_price(user_input)
             user_input = choose_option
             choice_menu(user_input)
+        when "Choose another list"
+            choose_another_list(user_input)
+            user_input = choose_option
+            choice_menu(user_input)
         when "Exit E-List-It"
             exit_list(user_input)
         end  
@@ -48,16 +52,13 @@ class Cli
         user_name = gets.chomp
     end
 
-    ##----------Pick a list option----------##
-
-
     def pick_list
         list_names = self.current_user.lists.map {|list| list.name}
         if list_names.length == 0
             "You don't have any stored lists. Please choose another option."
             choose_shopping_list
         else
-            user_lists = List.find_by(user_id: user.id)
+            user_lists = List.find_by(user_id: current_user.id)
             user_input = @@prompt.select("Pick a list", list_names)
             selected_list = List.find_by(name: user_input)
             self.current_list = selected_list
@@ -69,6 +70,7 @@ class Cli
 
     def create_or_find_user(user_name)
         if User.names.include?(user_name)
+            self.current_user = User.find_by(name: user_name)
             user_input = @@prompt.select('Would you like to use a previous list?', ["Yes", "No"])
             if user_input == "Yes"
                 self.current_user = User.find_by(name: user_name)
@@ -179,7 +181,9 @@ class Cli
 
 
     def choose_another_list(user_input)
-        
+        if user_input == "Choose another list"
+            self.pick_list
+        end
     end
 
     ##---------- Exist list option ----------##
