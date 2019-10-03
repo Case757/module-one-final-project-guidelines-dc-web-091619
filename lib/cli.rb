@@ -4,6 +4,8 @@ class Cli
     attr_accessor :current_user, :current_list, :prompt
     @@prompt = TTY::Prompt.new
 
+    ##----------Run the program----------##
+
     def runner
         user_name = get_user_name
         new_user = create_or_find_user(user_name)
@@ -12,8 +14,10 @@ class Cli
         choice_menu(user_input)
     end
 
+    ##----------Interprets choice menu----------##
+
+
     def choice_menu(user_input)
-        
         case user_input
         when "Add item" 
             add_item(user_input)
@@ -36,14 +40,19 @@ class Cli
         end  
     end
 
+    ##----------Gets user name----------##
+
+
     def get_user_name
         puts "Welcome to E-List-It! Please enter your name"
         user_name = gets.chomp
     end
 
-    def pick_list(user_name)
-        user = User.find_by(name: user_name)
-        list_names = user.lists.map {|list| list.name}
+    ##----------Pick a list option----------##
+
+
+    def pick_list
+        list_names = self.current_user.lists.map {|list| list.name}
         if list_names.length == 0
             "You don't have any stored lists. Please choose another option."
             choose_shopping_list
@@ -55,11 +64,15 @@ class Cli
         end
     end
 
+    ##----------Create or find user - update user_name variable----------##
+
+
     def create_or_find_user(user_name)
         if User.names.include?(user_name)
             user_input = @@prompt.select('Would you like to use a previous list?', ["Yes", "No"])
             if user_input == "Yes"
-              self.pick_list(user_name) 
+                self.current_user = User.find_by(name: user_name)
+              pick_list
             else
                 self.current_user = User.find_by(name: user_name)
             end
@@ -67,6 +80,9 @@ class Cli
             self.current_user = User.create(name: user_name)
         end
     end
+
+    ##----------Choose shopping list, sets current_list variable----------##
+
 
     def choose_shopping_list
         
@@ -87,9 +103,15 @@ class Cli
         end
     end
 
+    ##---------- Choose option prompt ----------##
+
+
     def choose_option
         user_input = @@prompt.select("Choose an option", ["Add item", "Remove item", "Print list", "Total price", "Choose another list", "Exit E-List-It"])
     end
+
+    ##---------- Add item option ----------##
+
 
     def add_item(user_input)
         if  user_input == "Add item"
@@ -105,6 +127,9 @@ class Cli
         end
         puts "Your list has been updated"
     end
+
+    ##---------- Remove item option ----------##
+
 
     def remove_item(user_input)
         if user_input == "Remove item"
@@ -129,6 +154,9 @@ class Cli
         end
     end
 
+    ##---------- Print list option ----------##
+
+
     def print_list(user_input)
         if user_input == "Print list"
             
@@ -138,15 +166,24 @@ class Cli
         end
     end
 
+    ##---------- Total price option----------##
+
+
     def total_price(user_input)
         if user_input == "Total price"
             puts "The items in your list total to $#{self.current_list.total_price}"
         end
     end
 
+    ##---------- Choose another list option ---------##
+
+
     def choose_another_list(user_input)
         
     end
+
+    ##---------- Exist list option ----------##
+
 
     def exit_list(user_input)
         if user_input == "Exit E-List-It"
@@ -155,6 +192,9 @@ class Cli
             puts "********************************"
         end
     end
+
+    ##---------- Print items that have been added ----------##
+
 
     def print_items_added(array)
         puts "These items have been added to your shopping list:"
