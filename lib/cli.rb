@@ -41,12 +41,15 @@ class Cli
     end
 
     def get_user_name
+        puts "_______________________________"
         puts "Welcome to E-List-It! Please enter your name"
+        puts "_______________________________"
         user_name = gets.chomp
     end
 
     def pick_list
         list_names = self.current_user.lists.map {|list| list.name}
+
         if list_names.length == 0
             "You don't have any stored lists. Please choose another option."
             choose_shopping_list
@@ -60,16 +63,24 @@ class Cli
 
     def create_or_find_user(user_name)
         if User.names.include?(user_name)
+
             self.current_user = User.find_by(name: user_name)
-            user_input = @@prompt.select('Would you like to use a previous list?', ["Yes", "No"])
-            if user_input == "Yes"
-              self.pick_list(user_name) 
-            else
-                self.current_user = User.find_by(name: user_name)
-            end
+            use_previous_list?
+
         else
             self.current_user = User.create(name: user_name)
         end
+    end
+
+    def use_previous_list?
+
+        user_input = @@prompt.select('Would you like to use a previous list?', ["Yes", "No"])
+
+            if user_input == "Yes"
+              self.pick_list 
+            else
+                self.current_user = User.find_by(name: gituser_name)
+            end
     end
 
     def choose_shopping_list
@@ -80,19 +91,23 @@ class Cli
             user_input = @@prompt.select('Would you like to create a new shopping list?',["Yes", "No"])
 
             if user_input == "Yes"
+                puts "_______________________________"
                 puts "Name your list."
+                puts "_______________________________"
                 list_name = gets.chomp
                 self.current_list = List.create(name: list_name, user_id: self.current_user.id) 
 
             elsif user_input == "No"
+                puts "_______________________________"
                 puts "Thank you for trying E-List-It"
+                puts "_______________________________"
                 exit!
             end
         end
     end
 
     def choose_option
-        user_input = @@prompt.select("Choose an option", ["Add item", "Remove item", "Print list", "Total price", "Choose another list", "Exit E-List-It"])
+        user_input = @@prompt.select("Your current list is #{self.current_list.name}. Choose an option:", ["Add item", "Remove item", "Print list", "Total price", "Choose another list", "Exit E-List-It"])
     end
 
     def add_item(user_input)
@@ -107,7 +122,9 @@ class Cli
                 ListItem.create(item_id: this_item.id, list_id: self.current_list.id)
             end
         end
+        puts "_______________________________"
         puts "Your list has been updated"
+        puts "_______________________________"
     end
 
     def remove_item(user_input)
@@ -124,21 +141,28 @@ class Cli
                     ListItem.destroy_by(item_id: this_item.id, list_id: self.current_list.id)
                 end
 
+                puts "_______________________________"
                 puts "Your list has been updated"
+                puts "_______________________________"
                 self.current_list.reload
 
             else
+                puts "_______________________________"
                 puts "There are no items on your list, please create a list."          
+                puts "_______________________________"
             end
         end
     end
 
     def print_list(user_input)
         if user_input == "Print list"
-            
+            puts "_______________________________"
+            puts "#{self.current_list.name} includes: \n"
+            puts "_______________________________"
             self.current_list.items.map do |item| 
                 puts item.item_name
             end
+            puts "_______________________________"
         end
     end
 
@@ -156,17 +180,19 @@ class Cli
 
     def exit_list(user_input)
         if user_input == "Exit E-List-It"
-            puts "********************************"
-            puts "See ya."
-            puts "********************************"
+            puts "_______________________________"
+            puts "Thank you for using E-List-It."
+            puts "_______________________________"
         end
     end
 
     def print_items_added(array)
+        puts "_______________________________"
         puts "These items have been added to your shopping list:"
         array.each do |item|
             puts item
         end
+        puts "_______________________________"
     end
 end
 
