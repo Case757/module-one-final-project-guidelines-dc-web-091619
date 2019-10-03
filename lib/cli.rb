@@ -4,6 +4,8 @@ class Cli
     attr_accessor :current_user, :current_list, :prompt
     @@prompt = TTY::Prompt.new
 
+    ##----------Run the program----------##
+
     def runner
         user_name = get_user_name
         new_user = create_or_find_user(user_name)
@@ -12,8 +14,10 @@ class Cli
         choice_menu(user_input)
     end
 
+    ##----------Interprets choice menu----------##
+
+
     def choice_menu(user_input)
-        
         case user_input
         when "Add item" 
             add_item(user_input)
@@ -40,6 +44,9 @@ class Cli
         end  
     end
 
+    ##----------Gets user name----------##
+
+
     def get_user_name
         puts "_______________________________"
         puts "Welcome to E-List-It! Please enter your name"
@@ -60,6 +67,9 @@ class Cli
             self.current_list = selected_list
         end
     end
+
+    ##----------Create or find user - update user_name variable----------##
+
 
     def create_or_find_user(user_name)
         if User.names.include?(user_name)
@@ -106,9 +116,15 @@ class Cli
         end
     end
 
+    ##---------- Choose option prompt ----------##
+
+
     def choose_option
         user_input = @@prompt.select("Your current list is #{self.current_list.name}. Choose an option:", ["Add item", "Remove item", "Print list", "Total price", "Choose another list", "Exit E-List-It"])
     end
+
+    ##---------- Add item option ----------##
+
 
     def add_item(user_input)
         if  user_input == "Add item"
@@ -126,6 +142,9 @@ class Cli
         puts "Your list has been updated"
         puts "_______________________________"
     end
+
+    ##---------- Remove item option ----------##
+
 
     def remove_item(user_input)
         if user_input == "Remove item"
@@ -154,6 +173,9 @@ class Cli
         end
     end
 
+    ##---------- Print list option ----------##
+
+
     def print_list(user_input)
         if user_input == "Print list"
             puts "_______________________________"
@@ -166,17 +188,26 @@ class Cli
         end
     end
 
+    ##---------- Total price option----------##
+
+
     def total_price(user_input)
         if user_input == "Total price"
             puts "The items in your list total to $#{self.current_list.total_price}"
         end
     end
 
+    ##---------- Choose another list option ---------##
+
+
     def choose_another_list(user_input)
         if user_input == "Choose another list"
             self.pick_list
         end
     end
+
+    ##---------- Exist list option ----------##
+
 
     def exit_list(user_input)
         if user_input == "Exit E-List-It"
@@ -185,6 +216,9 @@ class Cli
             puts "_______________________________"
         end
     end
+
+    ##---------- Print items that have been added ----------##
+
 
     def print_items_added(array)
         puts "_______________________________"
