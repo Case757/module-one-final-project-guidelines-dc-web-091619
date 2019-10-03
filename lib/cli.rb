@@ -81,7 +81,7 @@ class Cli
     end
 
     def choose_option
-        user_input = @@prompt.select("Choose an option", ["Add item", "Remove item", "Print list", "Total price", "Exit E-List-It"])
+        user_input = @@prompt.select("Choose an option", ["Add item", "Remove item", "Print list", "Total price", "Choose another list", "Exit E-List-It"])
     end
 
     def add_item(user_input)
@@ -135,6 +135,10 @@ class Cli
         if user_input == "Total price"
             puts "The items in your list total to $#{self.current_list.total_price}"
         end
+    end
+
+    def choose_another_list(user_input)
+        
     end
 
     def exit_list(user_input)
