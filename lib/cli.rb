@@ -43,8 +43,8 @@ class Cli
 
     def create_or_find_user(user_name)
         if User.names.include?(user_name)
-            user_input = @@prompt.yes?('Would you like to use a previous list?')
-            if user_input
+            user_input = @@prompt.select('Would you like to use a previous list?', ["Yes", "No"])
+            if user_input == "Yes"
                 user = User.find_by(name: user_name)
                 list_names = user.lists.map {|list| list.name}
                 user_lists = List.find_by(user_id: user.id)
