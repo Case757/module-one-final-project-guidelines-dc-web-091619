@@ -45,6 +45,7 @@ class Cli
         
         when "Create a new list"
             create_new_list(user_input)
+            binding.pry
             user_input = choose_option
             choice_menu(user_input)
        
@@ -125,9 +126,9 @@ class Cli
 
     def choose_option
         if self.current_list 
-            user_input = @@prompt.select("Your current list is #{self.current_list.name}. Choose an option:", ["Add item", "Remove item", "Print list", "Total price", "Choose another list", "Create new a list", "Exit E-List-It"])
+            user_input = @@prompt.select("Your current list is #{self.current_list.name}. Choose an option:", ["Add item", "Remove item", "Print list", "Total price", "Choose another list", "Create a new list", "Exit E-List-It"])
         else
-            user_input = @@prompt.select("Choose an option:", ["Add item", "Remove item", "Print list", "Total price", "Choose another list", "Create new a list", "Exit E-List-It"])
+            user_input = @@prompt.select("Choose an option:", ["Add item", "Remove item", "Print list", "Total price", "Choose another list", "Create a new list", "Exit E-List-It"])
         end
     end
 
