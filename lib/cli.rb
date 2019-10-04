@@ -40,7 +40,7 @@ class Cli
             choice_menu(user_input)
 
         when "Total price"
-            total_price(user_input)
+            total_price
             user_input = choose_option
             choice_menu(user_input)
         
@@ -191,8 +191,8 @@ class Cli
 
     ##---------- Print list option ----------##
 
-    # def print_list(user_input)
-    def print_list   ###took out user_input
+    # def print_list(user_input) ###take out user_input
+    def print_list   
         puts "_______________________________"
         puts "#{self.current_list.name} includes: \n"
         puts "_______________________________"
@@ -200,16 +200,15 @@ class Cli
         self.current_list.items.map do |item| 
             puts item.item_name
         end
+
         puts "_______________________________"
     end
 
     ##---------- Total price option----------##
 
 
-    def total_price(user_input)
-        if user_input == "Total price"
-            puts "The items in your list total to $#{self.current_list.total_price}"
-        end
+    def total_price
+        puts "The items in your list total to $#{self.current_list.total_price}"
     end
 
     ##---------- Choose another list option ---------##
