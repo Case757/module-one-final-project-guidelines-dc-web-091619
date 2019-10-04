@@ -26,7 +26,7 @@ Once a list has been created, you're presented with the following options:
 * Create a new list
 * Exit Listy
 
-## Add item
+#### Add item
 `Add item` allows you to add grocery items to your current list.  
 
 After selecting this option, you're presented wtih a list of grocery items that can be added to your list. 
@@ -35,7 +35,7 @@ To select an item, press the `spacebar`.
 
 Once you have selected all the items that you wish to add to your list, press `return`.
 
-## Remove ittem
+#### Remove item
 `Remove item` allows you to remove one or more grocery items from your current list.
 
 After selecting this option, you're presented wtih a list of grocery items that can be removed from your list. 
@@ -44,19 +44,19 @@ To select an item, press the `spacebar`.
 
 Once you have selected all the items that you wish to remove from your list, press `return`.
 
-## Print list
+#### Print list
 `Print list` displays the items currently on your list.
 
-## Total price
+#### Total price
 `Total price` displays the total price of the items currently on your list.
 
-## Choose another list
+#### Choose another list
 If multiple lists are associated with your username, `Choose another list` will display those lists, allowing you to switch between them.
 
-## Create a new list
+#### Create a new list
 `Create a new list` allows you to create a new grocery list.
 
-## Exit Listy
+#### Exit Listy
 `Exit Listy` ends your Listy session.
 
 # Authors
