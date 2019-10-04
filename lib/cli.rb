@@ -9,11 +9,8 @@ class Cli
     ##----------Run the program----------##
 
     def runner
-        # user_name = get_user_name
-        # new_user = create_or_find_user(user_name)   ###do we need to store this in a variable? Not being used anywhere. Why not just call the method?
         create_or_find_user(get_user_name)
         choose_shopping_list
-        # # user_input = choose_option
         choice_menu(choose_option)
     end
 
@@ -22,37 +19,27 @@ class Cli
     def choice_menu(user_input)
         case user_input
         when "Add item" 
-            # add_item(user_input) ####not using user_input in method call
             add_item
-            # user_input = choose_option
             choice_menu(choose_option)
 
         when "Remove item"
-            # remove_item(user_input) ###not using user_input in method call
             remove_item
-            # user_input = choose_option
             choice_menu(choose_option)
 
         when "Print list"
-            # print_list(user_input)  ###not using user_input
             print_list
-            # user_input = choose_option
             choice_menu(choose_option)
 
         when "Total price"
             total_price
-            # user_input = choose_option
             choice_menu(choose_option)
         
         when "Choose another list"
             choose_another_list
-            # user_input = choose_option
             choice_menu(choose_option)
         
         when "Create a new list"
-            # create_new_list(user_input)  ###not doing anything with user_input
             create_new_list 
-            # user_input = choose_option
             choice_menu(choose_option)
        
         when "Exit E-List-It"
@@ -78,7 +65,7 @@ class Cli
 
         if list_names.length == 0
             "You don't have any stored lists. Please choose another option."
-            self.choose_shopping_list #####added self
+            self.choose_shopping_list
         else
             user_lists = List.find_by(user_id: current_user.id)
             user_input = @@prompt.select("Pick a list", list_names)
@@ -107,13 +94,12 @@ class Cli
         if user_input == "Yes"
             pick_list
         else
-            # self.current_user = User.find_by(name: user_name)   ###we don't need to set current user here-- it's already done in #create_or_find_user, which calls this method
             create_new_list
         end
     end
 
     def choose_shopping_list
-
+        ###Figure out what's happening here
         #will this first conditional ever be true? :current_list isn't being set yet.
         if self.current_list
             self.current_list
@@ -121,7 +107,6 @@ class Cli
             user_input = @@prompt.select('Would you like to create a new shopping list?',["Yes", "No"])
 
             if user_input == "Yes"
-                # self.create_new_list(user_input) ####added self ###do we need to pass user_input here?
                 self.create_new_list
 
             elsif user_input == "No"
@@ -146,8 +131,6 @@ class Cli
 
     ##---------- Add item option ----------##
 
-
-    # def add_item(user_input)  ###not using user_input
     def add_item
         item_names = Item.all.map {|item| item.item_name}
 
@@ -166,12 +149,10 @@ class Cli
 
     ##---------- Remove item option ----------##
 
-
     def remove_item
         test_array = ListItem.all.map {|li| li.list_id}
         
         if test_array.include?(self.current_list.id)
-            # remove_items = @@prompt.multi_select("Please select items to remove from list.", self.current_list.items.map {|item| item.item_name})    ###change this variable name to items_to_remove --> better semantically
             items_to_remove = @@prompt.multi_select("Please select items to remove from list.", self.current_list.items.map {|item| item.item_name})
 
             items_to_remove.each do |item|
@@ -194,7 +175,6 @@ class Cli
 
     ##---------- Print list option ----------##
 
-    # def print_list(user_input) ###take out user_input
     def print_list   
         puts "_______________________________"
         puts "#{self.current_list.name} includes: \n"
@@ -209,14 +189,11 @@ class Cli
 
     ##---------- Total price option----------##
 
-
     def total_price
         puts "The items in your list total to $#{self.current_list.total_price}"
     end
 
     ##---------- Choose another list option ---------##
-
-    #just use pick list here and in #choice menu
 
     def choose_another_list
         self.pick_list
@@ -224,7 +201,6 @@ class Cli
 
     ##---------- Create a new list option ---------##
 
-    # def create_new_list(user_input)   ###take out user_input paramater, not doing anything with it
     def create_new_list
         puts "_______________________________"
         puts "Name your list."
@@ -236,26 +212,10 @@ class Cli
 
     ##---------- Exist list option ----------##
 
-
     def exit_list
         puts "_______________________________"
         puts "Thank you for using E-List-It."
         puts "_______________________________"
     end
-        
 
-    ##---------- Print items that have been added ----------##
-
-    ###we aren't calling this method anywhere
-
-    def print_items_added(array)
-        puts "_______________________________"
-        puts "These items have been added to your shopping list:"
-        array.each do |item|
-            puts item
-        end
-        puts "_______________________________"
-    end
 end
-
-    
