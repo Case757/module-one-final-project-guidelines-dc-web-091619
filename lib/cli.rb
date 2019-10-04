@@ -21,7 +21,6 @@ class Cli
         puts "_______________________________"
         puts "Welcome to Listy! Please enter your name"
         puts "_______________________________"
-
         user_name = gets.chomp
     end
 
@@ -29,11 +28,10 @@ class Cli
 
     def create_or_find_user(user_name)
         system "clear"
-        if User.names.include?(user_name)
 
+        if User.names.include?(user_name)
             self.current_user = User.find_by(name: user_name)
             use_previous_list?
-
         else
             self.current_user = User.create(name: user_name)
         end
@@ -41,6 +39,7 @@ class Cli
 
     def use_previous_list?
         system "clear"
+
         user_input = @@prompt.select('Would you like to use a previous list?', ["Yes", "No"])
 
         if user_input == "Yes"
@@ -51,8 +50,9 @@ class Cli
     end
 
     def pick_list
-        self.current_user.reload
         system "clear"
+
+        self.current_user.reload
         list_names = self.current_user.lists.map {|list| list.name}
 
         if list_names.length == 0
@@ -68,6 +68,7 @@ class Cli
 
     def choose_shopping_list
         system "clear"
+
         if self.current_list
             self.current_list
         else 
@@ -89,10 +90,10 @@ class Cli
 
     def create_new_list
         system "clear"
+
         puts "_______________________________"
         puts "Name your list."
         puts "_______________________________"
-
         list_name = gets.chomp
         self.current_list = List.create(name: list_name, user_id: self.current_user.id)     
     end
@@ -112,6 +113,7 @@ class Cli
 
     def choice_menu(user_input)
         case user_input
+
         when "Add item" 
             add_item
             choice_menu(choose_option)
@@ -145,13 +147,12 @@ class Cli
 
     def add_item
         system "clear"
-        item_names = Item.all.map {|item| item.item_name}
 
+        item_names = Item.all.map {|item| item.item_name}
         new_items = @@prompt.multi_select("Please select items to add to list. Scroll down for more options.", item_names, per_page: 15)
 
         new_items.each do |item|
             this_item = Item.find_by(item_name: item)
-
             ListItem.create(item_id: this_item.id, list_id: self.current_list.id)
         end
         
@@ -165,6 +166,7 @@ class Cli
 
     def remove_item
         system "clear"
+
         test_array = ListItem.all.map {|li| li.list_id}
         
         if test_array.include?(self.current_list.id)
@@ -172,7 +174,6 @@ class Cli
 
             items_to_remove.each do |item|
                 this_item = Item.find_by(item_name: item)
-                
                 ListItem.destroy_by(item_id: this_item.id, list_id: self.current_list.id)
             end
 
@@ -192,6 +193,7 @@ class Cli
 
     def print_list  
         system "clear"
+
         puts "_______________________________"
         puts "#{self.current_list.name} includes: \n"
         puts "_______________________________"
@@ -207,6 +209,7 @@ class Cli
 
     def total_price
         system "clear"
+
         puts "_______________________________"
         puts "The items in your list total to $#{self.current_list.total_price}"
         puts "_______________________________"
@@ -216,6 +219,7 @@ class Cli
 
     def choose_another_list
         system "clear"
+
         self.pick_list
     end 
 
@@ -223,6 +227,7 @@ class Cli
 
     def exit_list
         system "clear"
+
         puts "_______________________________"
         puts "Thank you for using Listy."
         puts "_______________________________"
