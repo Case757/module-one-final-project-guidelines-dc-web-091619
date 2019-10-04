@@ -3,7 +3,7 @@ require "tty-prompt"
 
 class Cli
 
-    attr_accessor :current_user, :current_list, :prompt
+    attr_accessor :current_user, :current_list
     @@prompt = TTY::Prompt.new
 
     ##----------Run the program----------##
@@ -99,8 +99,6 @@ class Cli
     end
 
     def choose_shopping_list
-        ###Figure out what's happening here
-        #will this first conditional ever be true? :current_list isn't being set yet.
         if self.current_list
             self.current_list
         else 
