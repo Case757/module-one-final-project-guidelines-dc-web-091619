@@ -9,12 +9,12 @@ class Cli
     ##----------Run the program----------##
 
     def runner
-        user_name = get_user_name
+        # user_name = get_user_name
         # new_user = create_or_find_user(user_name)   ###do we need to store this in a variable? Not being used anywhere. Why not just call the method?
-        create_or_find_user(user_name)
+        create_or_find_user(get_user_name)
         choose_shopping_list
-        user_input = choose_option
-        choice_menu(user_input)
+        # # user_input = choose_option
+        choice_menu(choose_option)
     end
 
     ##----------Interprets choice menu----------##
@@ -24,36 +24,36 @@ class Cli
         when "Add item" 
             # add_item(user_input) ####not using user_input in method call
             add_item
-            user_input = choose_option
-            choice_menu(user_input)
+            # user_input = choose_option
+            choice_menu(choose_option)
 
         when "Remove item"
             # remove_item(user_input) ###not using user_input in method call
             remove_item
-            user_input = choose_option
-            choice_menu(user_input)
+            # user_input = choose_option
+            choice_menu(choose_option)
 
         when "Print list"
             # print_list(user_input)  ###not using user_input
             print_list
-            user_input = choose_option
-            choice_menu(user_input)
+            # user_input = choose_option
+            choice_menu(choose_option)
 
         when "Total price"
             total_price
-            user_input = choose_option
-            choice_menu(user_input)
+            # user_input = choose_option
+            choice_menu(choose_option)
         
         when "Choose another list"
             choose_another_list
-            user_input = choose_option
-            choice_menu(user_input)
+            # user_input = choose_option
+            choice_menu(choose_option)
         
         when "Create a new list"
             # create_new_list(user_input)  ###not doing anything with user_input
             create_new_list 
-            user_input = choose_option
-            choice_menu(user_input)
+            # user_input = choose_option
+            choice_menu(choose_option)
        
         when "Exit E-List-It"
             exit_list
