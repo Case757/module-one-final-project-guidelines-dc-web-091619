@@ -9,6 +9,7 @@ class Cli
     ##----------Run the program----------##
 
     def runner
+        system "clear"
         create_or_find_user(get_user_name)
         choose_shopping_list
         choice_menu(choose_option)
@@ -60,7 +61,7 @@ class Cli
 
     def pick_list
         self.current_user.reload
-
+        system "clear"
         list_names = self.current_user.lists.map {|list| list.name}
 
         if list_names.length == 0
@@ -78,6 +79,7 @@ class Cli
 
 
     def create_or_find_user(user_name)
+        system "clear"
         if User.names.include?(user_name)
 
             self.current_user = User.find_by(name: user_name)
@@ -89,6 +91,7 @@ class Cli
     end
 
     def use_previous_list?
+        system "clear"
         user_input = @@prompt.select('Would you like to use a previous list?', ["Yes", "No"])
 
         if user_input == "Yes"
@@ -99,6 +102,7 @@ class Cli
     end
 
     def choose_shopping_list
+        system "clear"
         if self.current_list
             self.current_list
         else 
@@ -130,6 +134,7 @@ class Cli
     ##---------- Add item option ----------##
 
     def add_item
+        system "clear"
         item_names = Item.all.map {|item| item.item_name}
 
         new_items = @@prompt.multi_select("Please select items to add to list.", item_names)
@@ -143,11 +148,13 @@ class Cli
         puts "_______________________________"
         puts "Your list has been updated"
         puts "_______________________________"
+        self.current_list.reload
     end
 
     ##---------- Remove item option ----------##
 
     def remove_item
+        system "clear"
         test_array = ListItem.all.map {|li| li.list_id}
         
         if test_array.include?(self.current_list.id)
@@ -173,7 +180,8 @@ class Cli
 
     ##---------- Print list option ----------##
 
-    def print_list   
+    def print_list  
+        system "clear"
         puts "_______________________________"
         puts "#{self.current_list.name} includes: \n"
         puts "_______________________________"
@@ -188,18 +196,23 @@ class Cli
     ##---------- Total price option----------##
 
     def total_price
+        system "clear"
+        puts "_______________________________"
         puts "The items in your list total to $#{self.current_list.total_price}"
+        puts "_______________________________"
     end
 
     ##---------- Choose another list option ---------##
 
     def choose_another_list
+        system "clear"
         self.pick_list
     end
 
     ##---------- Create a new list option ---------##
 
     def create_new_list
+        system "clear"
         puts "_______________________________"
         puts "Name your list."
         puts "_______________________________"
@@ -211,6 +224,7 @@ class Cli
     ##---------- Exist list option ----------##
 
     def exit_list
+        system "clear"
         puts "_______________________________"
         puts "Thank you for using E-List-It."
         puts "_______________________________"
