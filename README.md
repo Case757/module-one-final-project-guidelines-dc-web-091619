@@ -10,7 +10,7 @@ Run  bundle install from the app directory.
 bundle install
 ```
 
-##Usage
+## Usage
 Upon launching the app, enter your name. 
 
 If you're new to Listy, follow the on-screen prompts to create new lists.  If you're a return user, choose whether to recall existing lists or create a new one.
