@@ -58,3 +58,6 @@ If multiple lists are associated with your username, `Choose another list` will 
 
 ## Exit Listy
 `Exit Listy` ends your Listy session.
+
+# Authors
+David Fellows and Graham Flaspoehler
