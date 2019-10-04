@@ -56,7 +56,7 @@ class Cli
             choice_menu(user_input)
        
         when "Exit E-List-It"
-            exit_list(user_input)
+            exit_list
         end  
     end
 
@@ -100,14 +100,14 @@ class Cli
     end
 
     def use_previous_list?
-
         user_input = @@prompt.select('Would you like to use a previous list?', ["Yes", "No"])
 
-            if user_input == "Yes"
-              self.pick_list ######added self
-            else
-                self.current_user = User.find_by(name: user_name)
-            end
+        if user_input == "Yes"
+            pick_list
+        else
+            # self.current_user = User.find_by(name: user_name)   ###we don't need to set current user here-- it's already done in #create_or_find_user, which calls this method
+            create_new_list
+        end
     end
 
     def choose_shopping_list
@@ -213,6 +213,7 @@ class Cli
 
     ##---------- Choose another list option ---------##
 
+    #just use pick list here and in #choice menu
 
     def choose_another_list
         self.pick_list
@@ -233,7 +234,7 @@ class Cli
     ##---------- Exist list option ----------##
 
 
-    def exit_list(user_input)
+    def exit_list
         puts "_______________________________"
         puts "Thank you for using E-List-It."
         puts "_______________________________"
@@ -242,6 +243,7 @@ class Cli
 
     ##---------- Print items that have been added ----------##
 
+    ###we aren't calling this method anywhere
 
     def print_items_added(array)
         puts "_______________________________"
