@@ -15,6 +15,99 @@ class Cli
         choice_menu(choose_option)
     end
 
+    ##----------Gets user name----------##
+
+    def get_user_name
+        puts "_______________________________"
+        puts "Welcome to Listy! Please enter your name"
+        puts "_______________________________"
+
+        user_name = gets.chomp
+    end
+
+    ##----------Create or find user - update user_name variable----------##
+
+    def create_or_find_user(user_name)
+        system "clear"
+        if User.names.include?(user_name)
+
+            self.current_user = User.find_by(name: user_name)
+            use_previous_list?
+
+        else
+            self.current_user = User.create(name: user_name)
+        end
+    end
+
+    def use_previous_list?
+        system "clear"
+        user_input = @@prompt.select('Would you like to use a previous list?', ["Yes", "No"])
+
+        if user_input == "Yes"
+            pick_list
+        else
+            create_new_list
+        end
+    end
+
+    def pick_list
+        self.current_user.reload
+        system "clear"
+        list_names = self.current_user.lists.map {|list| list.name}
+
+        if list_names.length == 0
+            "You don't have any stored lists. Please choose another option."
+            self.choose_shopping_list
+        else
+            user_lists = List.find_by(user_id: current_user.id)
+            user_input = @@prompt.select("Pick a list", list_names)
+            selected_list = List.find_by(name: user_input)
+            self.current_list = selected_list
+        end
+    end
+
+    def choose_shopping_list
+        system "clear"
+        if self.current_list
+            self.current_list
+        else 
+            user_input = @@prompt.select('Would you like to create a new shopping list?',["Yes", "No"])
+
+            if user_input == "Yes"
+                self.create_new_list
+
+            elsif user_input == "No"
+                puts "_______________________________"
+                puts "Thank you for trying Listy"
+                puts "_______________________________"
+                exit!
+            end
+        end
+    end
+
+    ##---------- Create a new list option ---------##
+
+    def create_new_list
+        system "clear"
+        puts "_______________________________"
+        puts "Name your list."
+        puts "_______________________________"
+
+        list_name = gets.chomp
+        self.current_list = List.create(name: list_name, user_id: self.current_user.id)     
+    end
+
+    ##---------- Choose option prompt ----------##
+
+
+    def choose_option
+        if self.current_list 
+            user_input = @@prompt.select("Your current list is #{self.current_list.name}. Choose an option:", ["Add item", "Remove item", "Print list", "Total price", "Choose another list", "Create a new list", "Exit Listy"])
+        else
+            user_input = @@prompt.select("Choose an option:", ["Add item", "Remove item", "Print list", "Total price", "Choose another list", "Create a new list", "Exit Listy"])
+        end
+    end
+    
     ##----------Interprets choice menu----------##
 
     def choice_menu(user_input)
@@ -43,92 +136,9 @@ class Cli
             create_new_list 
             choice_menu(choose_option)
        
-        when "Exit E-List-It"
+        when "Exit Listy"
             exit_list
         end  
-    end
-
-    ##----------Gets user name----------##
-
-
-    def get_user_name
-        puts "_______________________________"
-        puts "Welcome to E-List-It! Please enter your name"
-        puts "_______________________________"
-
-        user_name = gets.chomp
-    end
-
-    def pick_list
-        self.current_user.reload
-        system "clear"
-        list_names = self.current_user.lists.map {|list| list.name}
-
-        if list_names.length == 0
-            "You don't have any stored lists. Please choose another option."
-            self.choose_shopping_list
-        else
-            user_lists = List.find_by(user_id: current_user.id)
-            user_input = @@prompt.select("Pick a list", list_names)
-            selected_list = List.find_by(name: user_input)
-            self.current_list = selected_list
-        end
-    end
-
-    ##----------Create or find user - update user_name variable----------##
-
-
-    def create_or_find_user(user_name)
-        system "clear"
-        if User.names.include?(user_name)
-
-            self.current_user = User.find_by(name: user_name)
-            use_previous_list?
-
-        else
-            self.current_user = User.create(name: user_name)
-        end
-    end
-
-    def use_previous_list?
-        system "clear"
-        user_input = @@prompt.select('Would you like to use a previous list?', ["Yes", "No"])
-
-        if user_input == "Yes"
-            pick_list
-        else
-            create_new_list
-        end
-    end
-
-    def choose_shopping_list
-        system "clear"
-        if self.current_list
-            self.current_list
-        else 
-            user_input = @@prompt.select('Would you like to create a new shopping list?',["Yes", "No"])
-
-            if user_input == "Yes"
-                self.create_new_list
-
-            elsif user_input == "No"
-                puts "_______________________________"
-                puts "Thank you for trying E-List-It"
-                puts "_______________________________"
-                exit!
-            end
-        end
-    end
-
-    ##---------- Choose option prompt ----------##
-
-
-    def choose_option
-        if self.current_list 
-            user_input = @@prompt.select("Your current list is #{self.current_list.name}. Choose an option:", ["Add item", "Remove item", "Print list", "Total price", "Choose another list", "Create a new list", "Exit E-List-It"])
-        else
-            user_input = @@prompt.select("Choose an option:", ["Add item", "Remove item", "Print list", "Total price", "Choose another list", "Create a new list", "Exit E-List-It"])
-        end
     end
 
     ##---------- Add item option ----------##
@@ -137,7 +147,7 @@ class Cli
         system "clear"
         item_names = Item.all.map {|item| item.item_name}
 
-        new_items = @@prompt.multi_select("Please select items to add to list.", item_names)
+        new_items = @@prompt.multi_select("Please select items to add to list. Scroll down for more options.", item_names, per_page: 15)
 
         new_items.each do |item|
             this_item = Item.find_by(item_name: item)
@@ -158,7 +168,7 @@ class Cli
         test_array = ListItem.all.map {|li| li.list_id}
         
         if test_array.include?(self.current_list.id)
-            items_to_remove = @@prompt.multi_select("Please select items to remove from list.", self.current_list.items.map {|item| item.item_name})
+            items_to_remove = @@prompt.multi_select("Please select items to remove from list.\nScroll down for more options", self.current_list.items.map {|item| item.item_name}, per_page: 15)
 
             items_to_remove.each do |item|
                 this_item = Item.find_by(item_name: item)
@@ -207,26 +217,14 @@ class Cli
     def choose_another_list
         system "clear"
         self.pick_list
-    end
-
-    ##---------- Create a new list option ---------##
-
-    def create_new_list
-        system "clear"
-        puts "_______________________________"
-        puts "Name your list."
-        puts "_______________________________"
-
-        list_name = gets.chomp
-        self.current_list = List.create(name: list_name, user_id: self.current_user.id)     
-    end
+    end 
 
     ##---------- Exist list option ----------##
 
     def exit_list
         system "clear"
         puts "_______________________________"
-        puts "Thank you for using E-List-It."
+        puts "Thank you for using Listy."
         puts "_______________________________"
     end
 
