@@ -45,7 +45,7 @@ class Cli
             choice_menu(user_input)
         
         when "Choose another list"
-            choose_another_list(user_input)
+            choose_another_list
             user_input = choose_option
             choice_menu(user_input)
         
@@ -214,10 +214,8 @@ class Cli
     ##---------- Choose another list option ---------##
 
 
-    def choose_another_list(user_input)
-        if user_input == "Choose another list"
-            self.pick_list
-        end
+    def choose_another_list
+        self.pick_list
     end
 
     ##---------- Create a new list option ---------##
@@ -227,21 +225,20 @@ class Cli
         puts "_______________________________"
         puts "Name your list."
         puts "_______________________________"
+
         list_name = gets.chomp
-        self.current_list = List.create(name: list_name, user_id: self.current_user.id) 
-            
+        self.current_list = List.create(name: list_name, user_id: self.current_user.id)     
     end
 
     ##---------- Exist list option ----------##
 
 
     def exit_list(user_input)
-        if user_input == "Exit E-List-It"
-            puts "_______________________________"
-            puts "Thank you for using E-List-It."
-            puts "_______________________________"
-        end
+        puts "_______________________________"
+        puts "Thank you for using E-List-It."
+        puts "_______________________________"
     end
+        
 
     ##---------- Print items that have been added ----------##
 
