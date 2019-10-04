@@ -72,6 +72,8 @@ class Cli
     end
 
     def pick_list
+        self.current_user.reload
+
         list_names = self.current_user.lists.map {|list| list.name}
 
         if list_names.length == 0
@@ -111,7 +113,8 @@ class Cli
     end
 
     def choose_shopping_list
-        
+
+        #will this first conditional ever be true? :current_list isn't being set yet.
         if self.current_list
             self.current_list
         else 
